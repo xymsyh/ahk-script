@@ -1,0 +1,38 @@
+# AHK 脚本：Python TTS 自动化
+
+本项目包含用于自动化调用 Python TTS（文本转语音）脚本的 AutoHotkey (AHK) 脚本示例。主要功能是通过按下 F14 键，自动读取参数并执行 Python 脚本，实现中文文本的语音合成。
+
+## 文件结构
+
+- `run_tts.ahk`  
+  示例脚本，按下 F14 键后，直接传递中文参数给 Python 脚本。
+
+- `run_tts-2-UTF-8 with BOM.ahk`  
+  进阶脚本，按下 F14 键后，先从 `接受qk参数.md` 文件读取参数，再传递给 Python 脚本。适合动态参数场景。
+
+- `接受qk参数.md`  
+  存放要传递给 Python 脚本的参数内容。
+
+## 使用方法
+
+1. **确保所有 AHK 文件保存为 UTF-8 with BOM 格式。**
+2. 修改 AHK 脚本中的 `pythonExe` 或 `pythonPath` 为你的 Python 解释器路径。
+3. 修改 `scriptPath` 为你的 Python TTS 脚本路径。
+4. 如需动态参数，将参数写入 `接受qk参数.md` 文件。
+5. 按下 F14 键，自动执行 Python 脚本并传递参数。
+
+## 示例
+
+### 直接传递参数
+
+见 [`run_tts.ahk`](d:\R2025\AHK\ahk-script\run_tts.ahk)。
+
+### 文件读取参数
+
+见 [`run_tts-2-UTF-8 with BOM.ahk`](d:\R2025\AHK\ahk-script\run_tts-2-UTF-8 with BOM.ahk) 和 [`接受qk参数.md`](d:\R2025\AHK\ahk-script\接受qk参数.md)。
+
+## 注意事项
+
+- 确保 Python 环境已安装，并能正常运行 TTS 脚本。
+- 参数文件和脚本路径请根据实际情况修改。
+- 若需支持更多按键或参数格式，可自行扩展脚本。
