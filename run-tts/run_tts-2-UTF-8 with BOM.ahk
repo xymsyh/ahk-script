@@ -6,7 +6,7 @@ F14::
     scriptPath := "D:\R2025\AHK\ms-tts\main.py"
     
     ; 要读取的参数文件路径
-    paramFilePath := "D:\R2025\AHK\ahk-script\接受qk参数.md"
+    paramFilePath := "D:\R2025\AHK\ahk-script\run-tts\接受qk参数.md"
     
     ; 读取文件内容作为参数
     FileRead, parameters, %paramFilePath%
