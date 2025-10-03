@@ -13,8 +13,10 @@ F21::
     else  ; 偶数次按下
     {
         Send, ^+7  ; Ctrl+Shift+7
-        Sleep, 100  ; 可选，保证快捷键先后顺序，单位：毫秒
+        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
         Send, ^+2  ; Ctrl+Shift+2
+        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
+        Send, ^+0  ; Ctrl+Shift+0
     }
 return
 
