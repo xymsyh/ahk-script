@@ -17,7 +17,9 @@ F14::
     parameters := StrReplace(parameters, "`r`n", " ")
     parameters := StrReplace(parameters, "`n", " ")
     parameters := Trim(parameters)
-    
+    parameters := StrReplace(parameters, "_", " ")  ; 新增：移除所有下划线
+
+
     ; 判断内容是否包含汉字
     hasChinese := false
     Loop, Parse, parameters
@@ -50,6 +52,10 @@ F14::
 
 
     ; 确保脚本以UTF-8带BOM格式保存
+
+
+
+
 ; 当按下Ctrl+F14组合键时触发
 ^F14::
     ; 定义Python路径和要执行的停止脚本路径
