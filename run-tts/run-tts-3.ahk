@@ -1,26 +1,6 @@
 ﻿; 确保脚本使用UTF-8编码保存（带BOM）
 
 
-; 初始化计数器
-F21_Count := 0
-
-F21::
-    F21_Count++  ; 每次按下增加计数
-    if (Mod(F21_Count, 2) = 1)  ; 奇数次按下
-    {
-        Send, ^+3  ; Ctrl+Shift+3
-    }
-    else  ; 偶数次按下
-    {
-        Send, ^+7  ; Ctrl+Shift+7
-        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
-        Send, ^+2  ; Ctrl+Shift+2
-        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
-        Send, ^+0  ; Ctrl+Shift+0
-    }
-return
-
-
 ; 当按下F14键时触发
 F14::
     ; 定义要执行的Python命令
@@ -87,3 +67,25 @@ F14::
     ; SetTimer, ToolTip, -1500
     
     return
+
+
+; 初始化计数器
+F21_Count := 0
+
+F21::
+    F21_Count++  ; 每次按下增加计数
+    if (Mod(F21_Count, 2) = 1)  ; 奇数次按下
+    {
+        Send, ^+3  ; Ctrl+Shift+3
+    }
+    else  ; 偶数次按下
+    {
+        Send, ^+7  ; Ctrl+Shift+7
+        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
+        Send, ^+2  ; Ctrl+Shift+2
+        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
+        Send, ^+0  ; Ctrl+Shift+0
+    }
+return
+
+
