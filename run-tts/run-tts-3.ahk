@@ -9,7 +9,7 @@
 {
     pythonPath := "python"  ; 替换为实际Python路径
     scriptPath := "D:\R2025\AHK\ms-tts\main.py"
-    paramFilePath := "D:\R2025\AHK\ahk-script\run-tts\接受qk参数.md"
+    paramFilePath := "D:\R2025\AHK\ahk-script\run-tts\接受qk参数-简短.md"
     GoSub, RunTTS
 }
 return
@@ -22,7 +22,7 @@ return
 {
     pythonPath := "python"
     scriptPath := "D:\R2025\AHK\ms-tts\main.py"
-    paramFilePath := "D:\R2025\AHK\ahk-script\run-tts\接受qk参数-简短.md"
+    paramFilePath := "D:\R2025\AHK\ahk-script\run-tts\接受qk参数.md"
     GoSub, RunTTS
 }
 return
