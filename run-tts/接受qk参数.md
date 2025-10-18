@@ -1,1 +1,1 @@
-﻿physics, physics, physics, physics, physics
+﻿rounded, rounded, rounded, rounded, rounded
