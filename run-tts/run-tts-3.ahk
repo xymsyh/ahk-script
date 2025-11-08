@@ -33,20 +33,30 @@ return
 F21_Count := 0
 
 F21::
-    F21_Count++  ; 每次按下增加计数
-    if (Mod(F21_Count, 2) = 1)  ; 奇数次按下
+    ; 检查 EpicPen 进程是否存在
+    Process, Exist, EpicPen.exe
+    if (ErrorLevel = 0)  ; 如果不存在
     {
-        Send, ^+3  ; Ctrl+Shift+3
+        Send, #h  ; Win+H
     }
-    else  ; 偶数次按下
+    else  ; EpicPen 正在运行，执行原来的逻辑
     {
-        Send, ^+7  ; Ctrl+Shift+7
-        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
-        Send, ^+2  ; Ctrl+Shift+2
-        Sleep, 10  ; 可选，保证快捷键先后顺序，单位：毫秒
-        Send, ^+0  ; Ctrl+Shift+0
+        F21_Count++  ; 每次按下增加计数
+        if (Mod(F21_Count, 2) = 1)  ; 奇数次按下
+        {
+            Send, ^+3  ; Ctrl+Shift+3
+        }
+        else  ; 偶数次按下
+        {
+            Send, ^+7  ; Ctrl+Shift+7
+            Sleep, 10  ; 确保快捷键顺序
+            Send, ^+2  ; Ctrl+Shift+2
+            Sleep, 10
+            Send, ^+0  ; Ctrl+Shift+0
+        }
     }
 return
+
 
 
 
