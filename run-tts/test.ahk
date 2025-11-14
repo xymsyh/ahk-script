@@ -8,48 +8,57 @@ SetControlDelay, -1
 SetWinDelay, -1
 SetTitleMatchMode, 2
 
-imgPath := "D:\RX\QK变量\2025年11月13日.png"   ; 建议使用同名 .bmp 以提升速度
+imgPath := "D:\RX\QK变量\2025年11月13日.png"   
+outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 
 ^F23::
 {
-    ; ======================
-    ; 1. 截图全屏 → 写入剪贴板
-    ; ======================
-    Send, {PrintScreen}     ; PrintScreen 会把全屏截图放入剪贴板
-    Sleep, 50               ; 略微等待剪贴板完成写入（非常快）
+    ; -------------------
+    ; 1. 截图全屏到剪贴板
+    ; -------------------
+    Send, {PrintScreen}     
+    Sleep, 50               
 
-    ; ======================
-    ; 2. Ctrl+Shift+Alt+W
-    ; ======================
+    ; -------------------
+    ; 2. 发送 Ctrl+Shift+Alt+W
+    ; -------------------
     Send, ^+!w
-    Sleep, 150              ; 等待 150ms
+    Sleep, 150              
 
-    ; ======================
-    ; 3. 图像搜索（严格匹配、最快速）
-    ; ======================
-
-    ; 获取虚拟屏（适配多显示器）
+    ; -------------------
+    ; 3. 获取屏幕坐标
+    ; -------------------
     SysGet, L, 76
     SysGet, T, 77
     SysGet, R, 78
     SysGet, B, 79
 
-    ; 严格匹配（无容差）
+    ; -------------------
+    ; 4. 严格匹配图像搜索
+    ; -------------------
     ImageSearch, fx, fy, L, T, R, B, *0 %imgPath%
 
-    ; 未找到 → 停止流程
-    if (ErrorLevel != 0)
+    if (ErrorLevel = 0)
     {
-        MsgBox, 48, 图像检测, 未找到图像，流程中止。
-        return
-    }
+        ; 找到图像 → 写入坐标到文件（覆盖原内容）
+        FileDelete, %outputFile%  ; 删除原文件
+        FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
 
-    ; ======================
-    ; 4. 找到图像 → 粘贴 + 回车
-    ; ======================
-    Send, ^v
-    Sleep, 100
-    Send, {Enter}
+        ; 粘贴并回车
+        Send, ^v
+        Sleep, 200
+        Send, {Enter}
+    }
+    else if (ErrorLevel = 1)
+    {
+        ; 未找到 → 弹窗提示
+        MsgBox, 48, 图像检测, 未找到图像，流程中止。
+    }
+    else
+    {
+        ; 出错
+        MsgBox, 16, 图像检测, 搜索出错（ErrorLevel=%ErrorLevel%）。
+    }
 
     return
 }
