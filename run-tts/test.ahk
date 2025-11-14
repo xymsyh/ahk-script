@@ -23,7 +23,16 @@ outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
     ; 2. 发送 Ctrl+Shift+Alt+W
     ; -------------------
     Send, ^+!w
-    Sleep, 150              
+    Sleep, 75  
+
+    Send, ^+7  ; Ctrl+Shift+7  ↓↓↓↓↓本部分逻辑为清空epic pen
+    Sleep, 10  ; 确保快捷键顺序
+    Send, ^+2  ; Ctrl+Shift+2
+    Sleep, 10
+    Send, ^+0  ; Ctrl+Shift+0  ↑↑↑↑↑本部分逻辑为清空epic pen
+
+
+    Sleep, 75              
 
     ; -------------------
     ; 3. 获取屏幕坐标
