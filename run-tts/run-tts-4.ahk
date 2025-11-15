@@ -10,6 +10,7 @@ SetTitleMatchMode, 2
 
 ; ---------- 支持多张图片 ----------
 imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
+           , "D:\RX\QK变量\2025年11月15日2.png"
            , "D:\RX\QK变量\2025年11月15日.png"]  ; 可以在这里继续添加更多图片
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\炫酷的界面点击音mixkit-cool-interface-click-tone-2568.wav"
@@ -72,8 +73,7 @@ F16::
     Sleep, 150
     num := GetTodayCounter()
     SendInput, %num%
-    Send, {Enter}
-    Sleep, 150
+    Sleep, 10
 
     ; ==================================
     ; 4. 图像判断逻辑（支持多图片）
@@ -98,6 +98,8 @@ F16::
         FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
         ; 成功发送 → 结尾提示音
         SoundPlay, %soundFile%
+        Send, {Enter}
+
     } else if (ErrorLevel = 1) {
         MsgBox, 48, 图像检测, 未找到任何图片。
     } else {

@@ -16,6 +16,7 @@ F21::
         F21_Count++  ; 每次按下增加计数
         if (Mod(F21_Count, 2) = 1)  ; 奇数次按下
         {
+            Sleep, 100
             Send, ^+3  ; Ctrl+Shift+3
         }
         else  ; 偶数次按下
