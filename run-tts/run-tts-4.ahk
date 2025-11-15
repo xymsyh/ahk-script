@@ -8,7 +8,9 @@ SetControlDelay, -1
 SetWinDelay, -1
 SetTitleMatchMode, 2
 
-imgPath := "D:\RX\QK变量\2025年11月13日.png"
+; ---------- 支持多张图片 ----------
+imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
+           , "D:\RX\QK变量\2025年11月15日.png"]  ; 可以在这里继续添加更多图片
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\炫酷的界面点击音mixkit-cool-interface-click-tone-2568.wav"
 counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
@@ -61,11 +63,10 @@ F16::
     Send, ^+2
     Sleep, 10
     Send, ^+0
-
     Sleep, 300
 
     ; ==================================
-    ; 3. 立即 粘贴图片 + 写入编号
+    ; 3. 粘贴图片 + 写入编号
     ; ==================================
     Send, ^v
     Sleep, 150
@@ -75,29 +76,31 @@ F16::
     Sleep, 150
 
     ; ==================================
-    ; 4. 然后再进行图像判断逻辑
+    ; 4. 图像判断逻辑（支持多图片）
     ; ==================================
     SysGet, L, 76
     SysGet, T, 77
     SysGet, R, 78
     SysGet, B, 79
 
-    ImageSearch, fx, fy, L, T, R, B, *0 %imgPath%
+    found := false
+    Loop, % imgPaths.Length() {
+        img := imgPaths[A_Index]
+        ImageSearch, fx, fy, L, T, R, B, *0 %img%
+        if (ErrorLevel = 0) {
+            found := true
+            break  ; 找到任意一张图片就停止循环
+        }
+    }
 
-    if (ErrorLevel = 0)
-    {
+    if (found) {
         FileDelete, %outputFile%
         FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
-
         ; 成功发送 → 结尾提示音
         SoundPlay, %soundFile%
-    }
-    else if (ErrorLevel = 1)
-    {
-        MsgBox, 48, 图像检测, 未找到图像。
-    }
-    else
-    {
+    } else if (ErrorLevel = 1) {
+        MsgBox, 48, 图像检测, 未找到任何图片。
+    } else {
         MsgBox, 16, 图像检测, 搜索出错（ErrorLevel=%ErrorLevel%）。
     }
 
