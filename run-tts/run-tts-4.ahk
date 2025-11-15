@@ -12,12 +12,8 @@ imgPath := "D:\RX\QK变量\2025年11月13日.png"
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\炫酷的界面点击音mixkit-cool-interface-click-tone-2568.wav"
 
-^F23::
+F16::
 {
-    ; -------------------
-    ; 0. 播放提示音（开头）
-    ; -------------------
-    SoundPlay, %soundFile%
 
     ; -------------------
     ; 1. 截图全屏到剪贴板
@@ -68,6 +64,9 @@ soundFile := "D:\Users\Ran\Downloads\炫酷的界面点击音mixkit-cool-interfa
         ; 5. 成功发送 → 再播放提示音
         ; -------------------
         SoundPlay, %soundFile%
+
+
+
     }
     else if (ErrorLevel = 1)
     {
