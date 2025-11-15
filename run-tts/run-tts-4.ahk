@@ -17,7 +17,7 @@ outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
     ; 1. 截图全屏到剪贴板
     ; -------------------
     Send, {PrintScreen}     
-    Sleep, 10  
+    Sleep, 10
 
     ; -------------------
     ; 2. 发送 Ctrl+Shift+Alt+W
@@ -32,7 +32,7 @@ outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
     Send, ^+0  ; Ctrl+Shift+0  ↑↑↑↑↑本部分逻辑为清空epic pen
 
 
-    Sleep, 250              
+    Sleep, 300           
 
     ; -------------------
     ; 3. 获取屏幕坐标
