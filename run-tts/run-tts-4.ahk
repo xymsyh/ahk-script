@@ -35,7 +35,6 @@ GetTodayCounter() {
         newCount := 1
     }
 
-    ; 写回文件：格式 YYYYMMDD|编号
     FileDelete, %counterFile%
     FileAppend, %today%|%newCount%, %counterFile%
 
@@ -44,16 +43,14 @@ GetTodayCounter() {
 
 F16::
 {
-
-
     ; -------------------
-    ; 1. 截图全屏到剪贴板
+    ; 1. 截图 → 剪贴板
     ; -------------------
     Send, {PrintScreen}
     Sleep, 10
 
     ; -------------------
-    ; 2. 发送 Ctrl+Shift+Alt+W
+    ; 2. 触发 Ctrl+Shift+Alt+W
     ; -------------------
     Send, ^+!w
     Sleep, 10
@@ -67,45 +64,37 @@ F16::
 
     Sleep, 300
 
-    ; -------------------
-    ; 3. 获取屏幕坐标
-    ; -------------------
+    ; ==================================
+    ; 3. 立即 粘贴图片 + 写入编号
+    ; ==================================
+    Send, ^v
+    Sleep, 150
+    num := GetTodayCounter()
+    SendInput, 编号：%num%
+    Send, {Enter}
+    Sleep, 150
+
+    ; ==================================
+    ; 4. 然后再进行图像判断逻辑
+    ; ==================================
     SysGet, L, 76
     SysGet, T, 77
     SysGet, R, 78
     SysGet, B, 79
 
-    ; -------------------
-    ; 4. 图像搜索
-    ; -------------------
     ImageSearch, fx, fy, L, T, R, B, *0 %imgPath%
 
     if (ErrorLevel = 0)
     {
-        ; 找到图像 → 写入坐标
         FileDelete, %outputFile%
         FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
 
-        ; 粘贴并回车
-        Send, ^v
-        Sleep, 200
-        Send, {Enter}
-
-        ; =============================
-        ; 写入每日编号
-        ; =============================
-        num := GetTodayCounter()
-        SendInput, 编号：%num%
-        Send, {Enter}
-
-        ; -------------------
-        ; 成功发送 → 播放提示音
-        ; -------------------
+        ; 成功发送 → 结尾提示音
         SoundPlay, %soundFile%
     }
     else if (ErrorLevel = 1)
     {
-        MsgBox, 48, 图像检测, 未找到图像，流程中止。
+        MsgBox, 48, 图像检测, 未找到图像。
     }
     else
     {
