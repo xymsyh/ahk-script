@@ -70,7 +70,7 @@ F16::
     Send, ^v
     Sleep, 150
     num := GetTodayCounter()
-    SendInput, 编号：%num%
+    SendInput, %num%
     Send, {Enter}
     Sleep, 150
 
