@@ -13,7 +13,7 @@ imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
            , "D:\RX\QK变量\2025年11月15日2.png"
            , "D:\RX\QK变量\2025年11月15日.png"]  ; 可以在这里继续添加更多图片
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
-soundFile := "D:\Users\Ran\Downloads\mixkit-cool-interface-click-tone-2568.wav"
+soundFile := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
 counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
 
 ; ==========================================
@@ -58,12 +58,8 @@ F16::
     Send, ^+!w
     Sleep, 10
 
-    ; 清空 epic pen
-    Send, ^+7
-    Sleep, 10
-    Send, ^+2
-    Sleep, 10
-    Send, ^+0
+    ; 清空 epic pen （按下F21）
+    Send, {F21}
     Sleep, 300
 
     ; ==================================
