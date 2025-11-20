@@ -13,13 +13,11 @@ imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
            , "D:\RX\QK变量\2025年11月15日2.png"
            , "D:\RX\QK变量\2025年11月15日3.png"
            , "D:\RX\QK变量\2025年11月15日4.png"
-           , "D:\RX\QK变量\2025年11月15日.png"]  ; 可以在这里继续添加更多图片
+           , "D:\RX\QK变量\2025年11月15日.png"]  ; 可继续添加
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
+ErrorSoundFile := "D:\Users\Ran\Downloads\mixkit-click-error-1110.wav"
 counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
-
-
-
 
 ; ==========================================
 ; 读取 / 更新 当天编号（每天从 1 开始）
@@ -65,7 +63,7 @@ F16::
     Send, ^+!w
     Sleep, 10
 
-    ; 清空 epic pen （按下F21）
+    ; 清空 epic pen
     Send, {F21}
     Sleep, 300
     Sleep, 300
@@ -94,24 +92,24 @@ F16::
         ImageSearch, fx, fy, L, T, R, B, *0 %img%
         if (ErrorLevel = 0) {
             found := true
-            break  ; 找到任意一张图片就停止循环
+            break  ; 找到任意一张图片就停止
         }
     }
 
     if (found) {
         FileDelete, %outputFile%
         FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
+
         ; 成功发送 → 结尾提示音
         Send, {Enter}
         Sleep, 100
         Send, ^+!w
         SoundPlay, %soundFile%
-
-
-    } else if (ErrorLevel = 1) {
+    } 
+    else {
+        ; ❗ 未找到任何图片 → 播放错误提示音
+        SoundPlay, %ErrorSoundFile%
         MsgBox, 48, 图像检测, 未找到任何图片。
-    } else {
-        MsgBox, 16, 图像检测, 搜索出错（ErrorLevel=%ErrorLevel%）。
     }
 
     return
