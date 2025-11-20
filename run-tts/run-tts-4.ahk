@@ -67,13 +67,11 @@ F16::
     Send, {F21}
     Sleep, 300
     Sleep, 300
-    Sleep, 300
 
     ; ==================================
     ; 3. 粘贴图片 + 写入编号
     ; ==================================
     Send, ^v
-    Sleep, 150
     num := GetTodayCounter()
     SendInput, %num%
     Sleep, 10
@@ -101,6 +99,7 @@ F16::
         FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
 
         ; 成功发送 → 结尾提示音
+        Sleep, 300
         Send, {Enter}
         Sleep, 100
         Send, ^+!w
@@ -109,7 +108,6 @@ F16::
     else {
         ; ❗ 未找到任何图片 → 播放错误提示音
         SoundPlay, %ErrorSoundFile%
-        MsgBox, 48, 图像检测, 未找到任何图片。
     }
 
     return
