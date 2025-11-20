@@ -18,7 +18,7 @@ imgPaths.Push("D:\RX\QK变量\2025年11月15日.png")
 
 global outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 global counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
-global soundFile := "D:\Users\Ran\Downloads\mixkit-cool-interface-click-tone-2568.wav"
+global soundFile := "D:\RX\QK变量\mixkit-cool-interface-click-tone-2568.wav"
 
 ; ==========================
 ; 每天编号
@@ -65,11 +65,7 @@ F16::
     Send, ^+!w
     Sleep, 10
 
-    Send, ^+7
-    Sleep, 10
-    Send, ^+2
-    Sleep, 10
-    Send, ^+0
+    Send, {F21}
     Sleep, 300
 
     ; --- 粘贴 ---
