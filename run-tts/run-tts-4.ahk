@@ -12,10 +12,14 @@ SetTitleMatchMode, 2
 imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
            , "D:\RX\QK变量\2025年11月15日2.png"
            , "D:\RX\QK变量\2025年11月15日3.png"
+           , "D:\RX\QK变量\2025年11月15日4.png"
            , "D:\RX\QK变量\2025年11月15日.png"]  ; 可以在这里继续添加更多图片
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
 counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
+
+
+
 
 ; ==========================================
 ; 读取 / 更新 当天编号（每天从 1 开始）
@@ -47,6 +51,8 @@ GetTodayCounter() {
 
 F16::
 {
+    SoundPlay, %soundFile%
+
     ; -------------------
     ; 1. 截图 → 剪贴板
     ; -------------------
@@ -61,6 +67,7 @@ F16::
 
     ; 清空 epic pen （按下F21）
     Send, {F21}
+    Sleep, 300
     Sleep, 300
     Sleep, 300
 
@@ -95,8 +102,11 @@ F16::
         FileDelete, %outputFile%
         FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
         ; 成功发送 → 结尾提示音
-        SoundPlay, %soundFile%
         Send, {Enter}
+        Sleep, 100
+        Send, ^+!w
+        SoundPlay, %soundFile%
+
 
     } else if (ErrorLevel = 1) {
         MsgBox, 48, 图像检测, 未找到任何图片。
