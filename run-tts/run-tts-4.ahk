@@ -11,6 +11,7 @@ SetTitleMatchMode, 2
 ; ---------- 支持多张图片 ----------
 imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
            , "D:\RX\QK变量\2025年11月15日2.png"
+           , "D:\RX\QK变量\2025年11月15日3.png"
            , "D:\RX\QK变量\2025年11月15日.png"]  ; 可以在这里继续添加更多图片
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
