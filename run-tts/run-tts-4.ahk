@@ -8,15 +8,8 @@ SetControlDelay, -1
 SetWinDelay, -1
 SetTitleMatchMode, 2
 
-; ---------- 支持多张图片 ----------
-imgPaths := ["D:\RX\QK变量\2025年11月13日.png"
-           , "D:\RX\QK变量\2025年11月15日2.png"
-           , "D:\RX\QK变量\2025年11月15日3.png"
-           , "D:\RX\QK变量\2025年11月15日4.png"
-           , "D:\RX\QK变量\2025年11月15日.png"]  ; 可继续添加
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
-ErrorSoundFile := "D:\Users\Ran\Downloads\mixkit-click-error-1110.wav"
 counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
 
 ; ==========================================
@@ -77,38 +70,17 @@ F16::
     Sleep, 10
 
     ; ==================================
-    ; 4. 图像判断逻辑（支持多图片）
+    ; 删除图片判断逻辑 → 直接跳过
     ; ==================================
-    SysGet, L, 76
-    SysGet, T, 77
-    SysGet, R, 78
-    SysGet, B, 79
 
-    found := false
-    Loop, % imgPaths.Length() {
-        img := imgPaths[A_Index]
-        ImageSearch, fx, fy, L, T, R, B, *0 %img%
-        if (ErrorLevel = 0) {
-            found := true
-            break  ; 找到任意一张图片就停止
-        }
-    }
-
-    if (found) {
-        FileDelete, %outputFile%
-        FileAppend, 找到图像坐标：X=%fx% , Y=%fy%`n, %outputFile%
-
-        ; 成功发送 → 结尾提示音
-        Sleep, 300
-        Send, {Enter}
-        Sleep, 100
-        Send, ^+!w
-        SoundPlay, %soundFile%
-    } 
-    else {
-        ; ❗ 未找到任何图片 → 播放错误提示音
-        SoundPlay, %ErrorSoundFile%
-    }
+    ; ==================================
+    ; 始终执行成功结尾逻辑
+    ; ==================================
+    Sleep, 300
+    Send, {Enter}
+    Sleep, 100
+    Send, ^+!w
+    SoundPlay, %soundFile%
 
     return
 }
