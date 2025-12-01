@@ -10,6 +10,7 @@ SetTitleMatchMode, 2
 
 outputFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
 soundFile := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
+ErrorSoundFile := "D:\Users\Ran\Downloads\mixkit-click-error-1110.wav"
 counterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
 
 ; ==========================================
@@ -45,10 +46,10 @@ F16::
     SoundPlay, %soundFile%
 
     ; -------------------
-    ; 1. 截图 → 剪贴板
+    ; 1. 截图 → 剪贴板（图片进入剪贴板）
     ; -------------------
     Send, {PrintScreen}
-    Sleep, 100
+    Sleep, 150
 
     ; -------------------
     ; 2. 触发 Ctrl+Shift+Alt+W
@@ -62,24 +63,43 @@ F16::
     Sleep, 300
 
     ; ==================================
+    ; ★ 保护剪贴板中的图片（关键）
+    ; ==================================
+    ClipBackup := ClipboardAll  ; 完整备份图片
+
+    ; ==================================
+    ; ★ 获取当前选中文本（不破坏图片剪贴板）
+    ; ==================================
+    Send, ^a
+    Sleep, 60
+    Send, ^c
+    Sleep, 120
+    ClipWait, 0.5
+
+    selectedText := Clipboard  ; 保存选中的文本
+
+    ; 恢复剪贴板中的图片（不影响 selectedText 变量）
+    Clipboard := ClipBackup
+    VarSetCapacity(ClipBackup, 0)  ; 释放内存
+
+    ; 若未包含“学” → 播放错误音并退出
+    if !InStr(selectedText, "学") {
+        SoundPlay, %ErrorSoundFile%
+        return
+    }
+
+    ; ==================================
     ; 3. 粘贴图片 + 写入编号
     ; ==================================
-
-
-ChatGPT请你注意：在这里添加全选，然后选中文本并记录为selectedText变量，
-判断selectedText变量是否含有“学”字，含有则继续执行，否则退出脚本并播放错误提示音
-
-    Send, ^v
+    Send, ^v   ; 这里仍然是原来的图片
     num := GetTodayCounter()
 
-ChatGPT请你注意：在这里先输入变量selectedText的值，然后继续执行
+    ; 在此先输出 selectedText
+    SendInput, %selectedText%
 
+    ; 再输出编号
     SendInput, %num%
     Sleep, 10
-
-    ; ==================================
-    ; 删除图片判断逻辑 → 直接跳过
-    ; ==================================
 
     ; ==================================
     ; 始终执行成功结尾逻辑
@@ -87,10 +107,11 @@ ChatGPT请你注意：在这里先输入变量selectedText的值，然后继续�
     Sleep, 300
     Send, {Enter}
 
-ChatGPT请你注意：在这里先输入变量selectedText的值，然后继续执行
+    ; 第二次输出 selectedText
+    SendInput, %selectedText%
 
     Sleep, 100
-    Send, ^+!w
+    ; Send, ^+!w
     SoundPlay, %soundFile%
 
     return
