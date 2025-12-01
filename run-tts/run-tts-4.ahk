@@ -64,8 +64,16 @@ F16::
     ; ==================================
     ; 3. 粘贴图片 + 写入编号
     ; ==================================
+
+
+ChatGPT请你注意：在这里添加全选，然后选中文本并记录为selectedText变量，
+判断selectedText变量是否含有“学”字，含有则继续执行，否则退出脚本并播放错误提示音
+
     Send, ^v
     num := GetTodayCounter()
+
+ChatGPT请你注意：在这里先输入变量selectedText的值，然后继续执行
+
     SendInput, %num%
     Sleep, 10
 
@@ -78,6 +86,9 @@ F16::
     ; ==================================
     Sleep, 300
     Send, {Enter}
+
+ChatGPT请你注意：在这里先输入变量selectedText的值，然后继续执行
+
     Sleep, 100
     Send, ^+!w
     SoundPlay, %soundFile%
