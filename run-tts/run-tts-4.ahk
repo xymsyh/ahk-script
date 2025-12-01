@@ -55,7 +55,7 @@ F16::
     ; 1. 截图 → 剪贴板
     ; -------------------
     Send, {PrintScreen}
-    Sleep, 10
+    Sleep, 100
 
     ; -------------------
     ; 2. 触发 Ctrl+Shift+Alt+W
