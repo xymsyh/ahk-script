@@ -91,14 +91,55 @@ F16::
     ; 3. 粘贴图片 + 写入编号
     ; ==================================
     Send, ^v   ; 这里仍然是原来的图片
+    Sleep, 100
     num := GetTodayCounter()
 
-    ; 在此先输出 selectedText
-    SendInput, %selectedText%
 
-    ; 再输出编号
-    SendInput, %num%
-    Sleep, 10
+
+
+
+
+
+
+
+
+
+
+
+    ; ==================================
+    ; 3.x 拼接完整文本 → 使用粘贴写入
+    ; ==================================
+
+    finalText := selectedText . num
+
+
+    ; 将拼接后的文本放入剪贴板
+    Clipboard := finalText
+    ClipWait, 0.5
+
+    ; 使用粘贴而不是 SendInput
+    Send, ^v
+    Sleep, 50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     ; ==================================
     ; 始终执行成功结尾逻辑
@@ -106,8 +147,21 @@ F16::
     Sleep, 300
     Send, {Enter}
 
-    ; 第二次输出 selectedText
-    SendInput, %selectedText%
+    ; ==================================
+    ; 3.x 拼接完整文本 → 使用粘贴写入
+    ; ==================================
+
+    finalText := selectedText 
+
+
+    ; 将拼接后的文本放入剪贴板
+    Clipboard := finalText
+    ClipWait, 0.5
+
+    ; 使用粘贴而不是 SendInput
+    Send, ^v
+    Sleep, 50
+
 
     Sleep, 100
     ; Send, ^+!w
