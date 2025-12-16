@@ -1,4 +1,7 @@
-﻿#NoEnv
+﻿FileEncoding, UTF-8
+
+
+#NoEnv
 SendMode Input
 SetBatchLines, -1
 ListLines Off
@@ -110,7 +113,18 @@ F16::
     ; 3.x 拼接完整文本 → 使用粘贴写入
     ; ==================================
 
-    finalText := selectedText . num
+    ; 读取 无限配显.txt
+    extraFile := "D:\R2025\QK\无限配显.txt"
+    extraText := ""
+
+    if FileExist(extraFile) {
+        FileRead, extraText, %extraFile%
+        ; 去掉首尾换行和空格，防止格式错乱
+        extraText := Trim(extraText, "`r`n`t ")
+    }
+
+    ; 拼接：选中文本 + 编号 + ： + 文件内容
+    finalText := selectedText . num . "：" . extraText
 
 
     ; 将拼接后的文本放入剪贴板
