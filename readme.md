@@ -1,0 +1,1 @@
+D:\R2025\AHK\ahk-script\readme.md
