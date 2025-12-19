@@ -11,23 +11,24 @@ SetWinDelay, -1
 SetTitleMatchMode, 2
 
 ; =========================
-; 路径配置
+; 注意本代码使用 AHK v1（AutoHotkeyU64）写法，本行注释不可删除与更改！
+; Config
 ; =========================
-outputFile      := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3信息.md"
-soundFile       := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
-ErrorSoundFile  := "D:\Users\Ran\Downloads\mixkit-click-error-1110.wav"
-counterFile     := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
-extraFile       := "D:\R2025\QK\无限配显.txt"
+Config := {}
+Config.SoundOK     := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
+Config.SoundError  := "D:\Users\Ran\Downloads\mixkit-click-error-1110.wav"
+Config.CounterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
+Config.ExtraFile   := "D:\R2025\QK\无限配显.txt"
 
 ; ==========================================
-; 读取 / 更新 当天编号（每天从 1 开始）
+; 读取 / 更新 当天编号
 ; ==========================================
 GetTodayCounter() {
-    global counterFile
+    global Config
     today := A_YYYY A_MM A_DD
 
-    if FileExist(counterFile) {
-        FileRead, ct, %counterFile%
+    if FileExist(Config.CounterFile) {
+        FileRead, ct, % Config.CounterFile
         StringSplit, arr, ct, |
         lastDate  := arr1
         lastCount := arr2
@@ -36,8 +37,8 @@ GetTodayCounter() {
         newCount := 1
     }
 
-    FileDelete, %counterFile%
-    FileAppend, %today%|%newCount%, %counterFile%
+    FileDelete, % Config.CounterFile
+    FileAppend, %today%|%newCount%, % Config.CounterFile
     return newCount
 }
 
@@ -46,32 +47,34 @@ GetTodayCounter() {
 ; =========================
 F16::
 {
-    ; ---------- 提示音 ----------
-    SoundPlay, %soundFile%
+    SoundPlay, % Config.SoundOK
 
-    ; ---------- 1. 截图 ----------
+    ; ---------- 截图 ----------
     Send, {PrintScreen}
     Sleep, 10
 
-    ; ---------- 2. 触发工具 ----------
+    ; ---------- 触发工具 ----------
     Send, ^+!w
+    WinWaitActive, , , 2
+
+    ; ---------- 清空 Epic Pen ----------
+    Send, {F21}
     Sleep, 1000
 
-    Send, {F21}        ; 清空 Epic Pen
-    Sleep, 1000
-
-    ; ==================================
-    ; 保护剪贴板图片
-    ; ==================================
+    ; ---------- 备份剪贴板图片 ----------
     ClipBackup := ClipboardAll
 
-    ; ---------- 获取选中文本 ----------
+    ; ---------- 获取选中文本（驱动式） ----------
+    Clipboard := ""
     Send, ^a
-    Sleep, 60
     Send, ^c
-    Sleep, 120
     ClipWait, 0.5
-
+    if ErrorLevel {
+        Clipboard := ClipBackup
+        VarSetCapacity(ClipBackup, 0)
+        SoundPlay, % Config.SoundError
+        return
+    }
     selectedText := Clipboard
 
     ; ---------- 恢复图片 ----------
@@ -80,46 +83,46 @@ F16::
 
     ; ---------- 校验 ----------
     if !InStr(selectedText, "学") {
-        SoundPlay, %ErrorSoundFile%
+        SoundPlay, % Config.SoundError
         return
     }
 
-    ; ==================================
-    ; 3. 粘贴图片 + 编号
-    ; ==================================
+    ; ---------- 粘贴图片 ----------
     Send, ^v
     Sleep, 100
 
     num := GetTodayCounter()
 
-    ; ==================================
-    ; 3.x 拼接文本（第一次）
-    ; ==================================
+    ; ---------- 拼接文本 ----------
     extraText := ""
-    if FileExist(extraFile) {
-        FileRead, extraText, %extraFile%
+    if FileExist(Config.ExtraFile) {
+        FileRead, extraText, % Config.ExtraFile
         extraText := Trim(extraText, "`r`n`t ")
     }
 
     finalText := selectedText . num . "：" . extraText
-    Clipboard := finalText
-    ClipWait, 0.5
-    Send, ^v
-    Sleep, 50
 
-    ; ---------- 统一收尾 ----------
+    Clipboard := finalText
+    ClipWait, 0.3
+    if ErrorLevel {
+        SoundPlay, % Config.SoundError
+        return
+    }
+    Send, ^v
+
     Sleep, 300
     Send, {Enter}
 
-    ; ==================================
-    ; 3.x 拼接文本（第二次，仅选中文本）
-    ; ==================================
+    ; ---------- 第二次粘贴 ----------
     Clipboard := selectedText
-    ClipWait, 0.5
+    ClipWait, 0.3
+    if ErrorLevel {
+        SoundPlay, % Config.SoundError
+        return
+    }
     Send, ^v
-    Sleep, 50
 
     Sleep, 100
-    SoundPlay, %soundFile%
+    SoundPlay, % Config.SoundOK
     return
 }
