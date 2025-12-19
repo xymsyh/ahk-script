@@ -12,13 +12,38 @@ SetTitleMatchMode, 2
 
 ; =========================
 ; 注意本代码使用 AHK v1（AutoHotkeyU64）写法，本行注释不可删除与更改！
-; Config
+; =========================
+
+; =========================================================
+; 延时配置（所有 Sleep 均集中在此，单位：毫秒）
+; 修改这里即可全局调整节奏
+; =========================================================
+
+; 截图（PrintScreen）后，等待系统将截图写入剪贴板
+Sleep_After_PrintScreen := 10
+
+; 清空 Epic Pen 后，等待其完成内部清除与焦点稳定
+Sleep_After_Clear_EpicPen := 1000
+
+; 粘贴图片（Ctrl+V）后，等待图片渲染完成
+Sleep_After_Paste_Image := 100
+
+; 第一次文本粘贴完成后，等待 UI 稳定再发送 Enter
+Sleep_Before_Enter := 300
+
+; 第二次文本粘贴完成后，最终收尾前的缓冲等待
+Sleep_Before_Final_Sound := 100
+
+
+; =========================
+; Config（路径与资源配置）
 ; =========================
 Config := {}
 Config.SoundOK     := "D:\Users\Ran\Downloads\mixkit-select-click-1109 (1).wav"
 Config.SoundError  := "D:\Users\Ran\Downloads\mixkit-click-error-1110.wav"
 Config.CounterFile := "D:\R2025\AHK\ahk-script\run-tts\counter.txt"
 Config.ExtraFile   := "D:\R2025\QK\无限配显.txt"
+
 
 ; ==========================================
 ; 读取 / 更新 当天编号
@@ -42,6 +67,7 @@ GetTodayCounter() {
     return newCount
 }
 
+
 ; =========================
 ; 主热键
 ; =========================
@@ -51,7 +77,7 @@ F16::
 
     ; ---------- 截图 ----------
     Send, {PrintScreen}
-    Sleep, 10
+    Sleep, %Sleep_After_PrintScreen%
 
     ; ---------- 触发工具 ----------
     Send, ^+!w
@@ -59,7 +85,7 @@ F16::
 
     ; ---------- 清空 Epic Pen ----------
     Send, {F21}
-    Sleep, 1000
+    Sleep, %Sleep_After_Clear_EpicPen%
 
     ; ---------- 备份剪贴板图片 ----------
     ClipBackup := ClipboardAll
@@ -89,7 +115,7 @@ F16::
 
     ; ---------- 粘贴图片 ----------
     Send, ^v
-    Sleep, 100
+    Sleep, %Sleep_After_Paste_Image%
 
     num := GetTodayCounter()
 
@@ -110,7 +136,8 @@ F16::
     }
     Send, ^v
 
-    Sleep, 300
+    ; ---------- 回车确认 ----------
+    Sleep, %Sleep_Before_Enter%
     Send, {Enter}
 
     ; ---------- 第二次粘贴 ----------
@@ -122,7 +149,8 @@ F16::
     }
     Send, ^v
 
-    Sleep, 100
+    ; ---------- 结束提示 ----------
+    Sleep, %Sleep_Before_Final_Sound%
     SoundPlay, % Config.SoundOK
     return
 }
