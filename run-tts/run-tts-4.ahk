@@ -23,7 +23,7 @@ SetTitleMatchMode, 2
 Sleep_After_PrintScreen := 10
 
 ; 清空 Epic Pen 后，等待其完成内部清除与焦点稳定
-Sleep_After_Clear_EpicPen := 1000
+Sleep_After_Clear_EpicPen := 500
 
 ; 粘贴图片（Ctrl+V）后，等待图片渲染完成
 Sleep_After_Paste_Image := 100
@@ -80,8 +80,8 @@ F16::
     Sleep, %Sleep_After_PrintScreen%
 
     ; ---------- 触发工具 ----------
-    Send, ^+!w
-    WinWaitActive, , , 2
+    Send, ^+!w ; 本快捷键用于打开微信输入窗口
+    WinWaitActive, , , 1
 
     ; ---------- 清空 Epic Pen ----------
     Send, {F21}
