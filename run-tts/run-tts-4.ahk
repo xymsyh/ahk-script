@@ -34,6 +34,9 @@ Sleep_Before_Enter := 300
 ; 第二次文本粘贴完成后，最终收尾前的缓冲等待
 Sleep_Before_Final_Sound := 100
 
+; 监听鼠标是否移动的轮询间隔
+Sleep_Mouse_Watch_Interval    := 50
+
 
 ; =========================
 ; Config（路径与资源配置）
@@ -79,8 +82,8 @@ F16::
     Send, {PrintScreen}
     Sleep, %Sleep_After_PrintScreen%
 
-    ; ---------- 触发工具 ----------
-    Send, ^+!w ; 本快捷键用于打开微信输入窗口
+    ; ---------- 打开微信输入窗口 ----------
+    Send, ^+!w
     WinWaitActive, , , 1
 
     ; ---------- 清空 Epic Pen ----------
@@ -90,7 +93,7 @@ F16::
     ; ---------- 备份剪贴板图片 ----------
     ClipBackup := ClipboardAll
 
-    ; ---------- 获取选中文本（驱动式） ----------
+    ; ---------- 获取选中文本 ----------
     Clipboard := ""
     Send, ^a
     Send, ^c
@@ -149,8 +152,23 @@ F16::
     }
     Send, ^v
 
-    ; ---------- 结束提示 ----------
+    ; ---------- 成功提示 ----------
     Sleep, %Sleep_Before_Final_Sound%
     SoundPlay, % Config.SoundOK
+
+
+    ; =================================================
+    ; 成功后：等待鼠标移动 → 自动关闭微信窗口
+    ; =================================================
+    MouseGetPos, startX, startY
+    Loop {
+        Sleep, %Sleep_Mouse_Watch_Interval%
+        MouseGetPos, curX, curY
+        if (curX != startX || curY != startY) {
+            Send, ^+!w
+            break
+        }
+    }
+
     return
 }
