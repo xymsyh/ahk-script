@@ -1,13 +1,9 @@
 ﻿; 确保脚本使用UTF-8编码保存（带BOM）
 
 ; =========================
-; 初始化计数器
+; 配置文件
 ; =========================
-F21_Count := 0
-
-; =========================
-; 配置：荧光模式开关文件
-; =========================
+CountFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3.计数"
 GlowFlagFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3.荧光"
 
 F21::
@@ -19,42 +15,49 @@ F21::
     }
     else  ; EpicPen 正在运行
     {
-        F21_Count++  ; 每次按下增加计数
-
-        ; =========================
-        ; 奇数次按下
-        ; =========================
-        if (Mod(F21_Count, 2) = 1)
+        ; ---------- 读取计数文件 ----------
+        if FileExist(CountFile)
         {
-            ; ---------- 读取荧光开关文件 ----------
-            GlowFlag := "0"  ; 默认值，防止文件不存在或异常
+            FileRead, F21_Count, %CountFile%
+            F21_Count := Trim(F21_Count)
+            if (F21_Count != "0" && F21_Count != "1")
+                F21_Count := "0"  ; 防止文件内容异常
+        }
+        else
+        {
+            F21_Count := "0"  ; 文件不存在时初始化
+        }
 
+        ; ---------- 交替 0/1 ----------
+        if (F21_Count = "0")
+        {
+            F21_Count := "1"  ; 下次变成 1
+            ; ---------- 奇数次操作 ----------
+            GlowFlag := "0"
             if FileExist(GlowFlagFile)
             {
                 FileRead, GlowFlag, %GlowFlagFile%
-                GlowFlag := Trim(GlowFlag)  ; 去除空格/换行
+                GlowFlag := Trim(GlowFlag)
             }
 
-            ; ---------- 根据文件内容决定快捷键 ----------
             if (GlowFlag = "1")
-            {
-                Send, ^+4  ; Ctrl + Shift + 4（荧光模式）
-            }
+                Send, ^+4  ; 荧光模式
             else
-            {
-                Send, ^+3  ; Ctrl + Shift + 3（原始逻辑）
-            }
+                Send, ^+3  ; 原始逻辑
         }
-        ; =========================
-        ; 偶数次按下（保持原逻辑）
-        ; =========================
         else
         {
-            Send, ^+7  ; Ctrl + Shift + 7
+            F21_Count := "0"  ; 下次变成 0
+            ; ---------- 偶数次操作 ----------
+            Send, ^+7
             Sleep, 10
-            Send, ^+2  ; Ctrl + Shift + 2
+            Send, ^+2
             Sleep, 10
-            Send, ^+0  ; Ctrl + Shift + 0
+            Send, ^+0
         }
+
+        ; ---------- 写回计数文件 ----------
+        FileDelete, %CountFile%  ; 先删除旧文件
+        FileAppend, %F21_Count%, %CountFile%
     }
 return
