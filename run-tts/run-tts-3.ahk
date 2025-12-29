@@ -16,7 +16,7 @@ F21::
         F21_Count++  ; 每次按下增加计数
         if (Mod(F21_Count, 2) = 1)  ; 奇数次按下
         {
-            Send, ^+3  ; Ctrl+Shift+3
+            Send, ^+3  ; Ctrl+Shift+3  chatgpt请你在这里添加判断，如果"D:\R2025\AHK\ahk-script\run-tts\run-tts-3.荧光"的内容为0则保持原始逻辑不变，如果为1则替换为使用快捷键Ctrl+Shift+4
         }
         else  ; 偶数次按下
         {
