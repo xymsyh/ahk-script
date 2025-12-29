@@ -86,8 +86,15 @@ F16::
     Send, ^+!w
     WinWaitActive, , , 1
 
-    ; ---------- 清空 Epic Pen ----------
-    Send, {F21}   ; ChatGPT请你在这里添加逻辑，检查“D:\R2025\AHK\ahk-script\run-tts\run-tts-3.计数”文件值是否为数字1，如果是则执行清空否则不执行
+    ; ---------- 条件清空 Epic Pen ----------
+    FilePath := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3.计数"
+    if FileExist(FilePath) {
+        FileRead, fileVal, %FilePath%
+        fileVal := Trim(fileVal)  ; 去掉空格和换行
+        if (fileVal = "1") {
+            Send, {F21}  ; 执行清空
+        }
+    }
     Sleep, %Sleep_After_Clear_EpicPen%
 
     ; ---------- 备份剪贴板图片 ----------
@@ -160,6 +167,7 @@ F16::
     ; =================================================
     ; 成功后：等待鼠标移动 → 自动关闭微信窗口
     ; =================================================
+    ; ChatGPT请你在这里添加逻辑，当“D:\R2025\AHK\ahk-script\run-tts\run-tts-4.自动关闭”文件值为1是才执行后续的操作，为0则跳过
     MouseGetPos, startX, startY
     Loop {
         Sleep, %Sleep_Mouse_Watch_Interval%
