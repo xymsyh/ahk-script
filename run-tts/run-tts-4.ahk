@@ -87,7 +87,7 @@ F16::
     WinWaitActive, , , 1
 
     ; ---------- 清空 Epic Pen ----------
-    Send, {F21}   ; ChatGPT请你在这里添加逻辑，检查是否有 Epic Pen 的笔迹，如果存在笔迹则执行清空否则不执行
+    Send, {F21}   ; ChatGPT请你在这里添加逻辑，检查“D:\R2025\AHK\ahk-script\run-tts\run-tts-3.计数”文件值是否为数字1，如果是则执行清空否则不执行
     Sleep, %Sleep_After_Clear_EpicPen%
 
     ; ---------- 备份剪贴板图片 ----------
