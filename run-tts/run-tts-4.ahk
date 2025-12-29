@@ -165,16 +165,26 @@ F16::
 
 
     ; =================================================
-    ; 成功后：等待鼠标移动 → 自动关闭微信窗口
+    ; 成功后：等待鼠标移动 → 自动关闭微信窗口（带条件）
     ; =================================================
-    ; ChatGPT请你在这里添加逻辑，当“D:\R2025\AHK\ahk-script\run-tts\run-tts-4.自动关闭”文件值为1是才执行后续的操作，为0则跳过
-    MouseGetPos, startX, startY
-    Loop {
-        Sleep, %Sleep_Mouse_Watch_Interval%
-        MouseGetPos, curX, curY
-        if (curX != startX || curY != startY) {
-            Send, ^+!w
-            break
+    AutoCloseFile := "D:\R2025\AHK\ahk-script\run-tts\run-tts-4.自动关闭"
+    AutoClose := 0
+    if FileExist(AutoCloseFile) {
+        FileRead, fileVal, %AutoCloseFile%
+        fileVal := Trim(fileVal)
+        if (fileVal = "1")
+            AutoClose := 1
+    }
+
+    if (AutoClose) {
+        MouseGetPos, startX, startY
+        Loop {
+            Sleep, %Sleep_Mouse_Watch_Interval%
+            MouseGetPos, curX, curY
+            if (curX != startX || curY != startY) {
+                Send, ^+!w
+                break
+            }
         }
     }
 
