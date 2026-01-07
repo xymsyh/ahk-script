@@ -23,7 +23,7 @@ SetTitleMatchMode, 2
 Sleep_After_PrintScreen := 10
 
 ; 清空 Epic Pen 后，等待其完成内部清除与焦点稳定
-Sleep_After_Clear_EpicPen := 500
+Sleep_After_Clear_EpicPen := 10
 
 ; 粘贴图片（Ctrl+V）后，等待图片渲染完成
 Sleep_After_Paste_Image := 100
@@ -82,9 +82,6 @@ F16::
     Send, {PrintScreen}
     Sleep, %Sleep_After_PrintScreen%
 
-    ; ---------- 打开微信输入窗口 ----------
-    Send, ^+!w
-    WinWaitActive, , , 1
 
     ; ---------- 条件清空 Epic Pen ----------
     FilePath := "D:\R2025\AHK\ahk-script\run-tts\run-tts-3.计数"
@@ -95,6 +92,12 @@ F16::
             Send, {F21}  ; 执行清空
         }
     }
+
+    ; ---------- 打开微信输入窗口 ----------
+    Send, ^+!w
+    WinWaitActive, , , 1
+
+
     Sleep, %Sleep_After_Clear_EpicPen%
 
     ; ---------- 备份剪贴板图片 ----------
